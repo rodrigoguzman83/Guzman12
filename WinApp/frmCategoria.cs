@@ -8,13 +8,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Vistas
+namespace WinApp
 {
-    public partial class frmEmpleado : Form
+    public partial class frmCategoria : Form
     {
-        public frmEmpleado()
+        public frmCategoria()
         {
             InitializeComponent();
+        }
+
+        private void frmCategoria_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -8,13 +8,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace TP2_Guzman
+namespace WinApp
 {
-    public partial class Form1 : Form
+    public partial class frmListadoArticulos : Form
     {
-        public Form1()
+        public frmListadoArticulos()
         {
             InitializeComponent();
+        }
+
+        private void frmListadoArticulos_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

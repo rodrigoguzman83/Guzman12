@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TP2_Guzman
+namespace Negocio
 {
-    public class Marca
+    public class Class1
     {
-        public int Id { get; set; }
-        public string Nombre { get; set; }
     }
 }

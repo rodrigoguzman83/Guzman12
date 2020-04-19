@@ -8,13 +8,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Vistas
+namespace WinApp
 {
-    public partial class frmTipoUsuario : Form
+    public partial class frmMarcas : Form
     {
-        public frmTipoUsuario()
+        public frmMarcas()
         {
             InitializeComponent();
+        }
+
+        private void frmMarcas_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

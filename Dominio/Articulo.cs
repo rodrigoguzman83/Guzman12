@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TP2_Guzman
+namespace Dominio
 {
     public class Articulo
     {
@@ -15,6 +15,5 @@ namespace TP2_Guzman
         public List<Categoria> Categorias { get; set; }
         public string Imagen { get; set; }
         public float Precio { get; set; }
-        public List<Proveedor>Proveedores { get; set; }
     }
 }

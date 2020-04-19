@@ -8,13 +8,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Vistas
+namespace WinApp
 {
-    public partial class frmListadoEmpleados : Form
+    public partial class frmListadoMarcas : Form
     {
-        public frmListadoEmpleados()
+        public frmListadoMarcas()
         {
             InitializeComponent();
+        }
+
+        private void frmListadoMarcas_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

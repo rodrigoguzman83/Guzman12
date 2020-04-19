@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Vistas
 {
-    public partial class frmListadoTipoUsuario : Form
+    public partial class frmArticulo : Form
     {
-        public frmListadoTipoUsuario()
+        public frmArticulo()
         {
             InitializeComponent();
         }

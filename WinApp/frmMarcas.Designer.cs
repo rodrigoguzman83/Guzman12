@@ -1,16 +1,16 @@
-﻿namespace Vistas
+﻿namespace WinApp
 {
-    partial class frmTipoUsuario
+    partial class frmMarcas
     {
         /// <summary>
-        /// Required designer variable.
+        /// Variable del diseñador necesaria.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
-        /// Clean up any resources being used.
+        /// Limpiar los recursos que se estén usando.
         /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        /// <param name="disposing">true si los recursos administrados se deben desechar; false en caso contrario.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,70 +20,71 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
+        #region Código generado por el Diseñador de Windows Forms
 
         /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
+        /// Método necesario para admitir el Diseñador. No se puede modificar
+        /// el contenido de este método con el editor de código.
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtTipoUsuario = new System.Windows.Forms.TextBox();
+            this.lblNombre = new System.Windows.Forms.Label();
+            this.txtNombreMarca = new System.Windows.Forms.TextBox();
             this.btnAceptar = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
-            this.lblNombre = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // txtTipoUsuario
+            // lblNombre
             // 
-            this.txtTipoUsuario.Location = new System.Drawing.Point(128, 51);
-            this.txtTipoUsuario.Name = "txtTipoUsuario";
-            this.txtTipoUsuario.Size = new System.Drawing.Size(164, 20);
-            this.txtTipoUsuario.TabIndex = 0;
+            this.lblNombre.AutoSize = true;
+            this.lblNombre.Location = new System.Drawing.Point(29, 36);
+            this.lblNombre.Name = "lblNombre";
+            this.lblNombre.Size = new System.Drawing.Size(44, 13);
+            this.lblNombre.TabIndex = 0;
+            this.lblNombre.Text = "Nombre";
+            // 
+            // txtNombreMarca
+            // 
+            this.txtNombreMarca.Location = new System.Drawing.Point(88, 29);
+            this.txtNombreMarca.Name = "txtNombreMarca";
+            this.txtNombreMarca.Size = new System.Drawing.Size(185, 20);
+            this.txtNombreMarca.TabIndex = 1;
             // 
             // btnAceptar
             // 
             this.btnAceptar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAceptar.Location = new System.Drawing.Point(50, 105);
+            this.btnAceptar.Location = new System.Drawing.Point(65, 84);
             this.btnAceptar.Name = "btnAceptar";
             this.btnAceptar.Size = new System.Drawing.Size(75, 23);
-            this.btnAceptar.TabIndex = 1;
+            this.btnAceptar.TabIndex = 2;
             this.btnAceptar.Text = "Aceptar";
             this.btnAceptar.UseVisualStyleBackColor = true;
             // 
             // btnCancelar
             // 
             this.btnCancelar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCancelar.Location = new System.Drawing.Point(217, 105);
+            this.btnCancelar.Location = new System.Drawing.Point(198, 84);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(75, 23);
-            this.btnCancelar.TabIndex = 2;
+            this.btnCancelar.TabIndex = 3;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
             // 
-            // lblNombre
-            // 
-            this.lblNombre.AutoSize = true;
-            this.lblNombre.Location = new System.Drawing.Point(36, 58);
-            this.lblNombre.Name = "lblNombre";
-            this.lblNombre.Size = new System.Drawing.Size(47, 13);
-            this.lblNombre.TabIndex = 3;
-            this.lblNombre.Text = "Nombre:";
-            // 
-            // frmTipoUsuario
+            // frmMarcas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(370, 184);
-            this.Controls.Add(this.lblNombre);
+            this.ClientSize = new System.Drawing.Size(319, 143);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnAceptar);
-            this.Controls.Add(this.txtTipoUsuario);
+            this.Controls.Add(this.txtNombreMarca);
+            this.Controls.Add(this.lblNombre);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "frmTipoUsuario";
+            this.Name = "frmMarcas";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Tipo Usuario";
+            this.Text = "Marcas";
+            this.Load += new System.EventHandler(this.frmMarcas_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -91,9 +92,10 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox txtTipoUsuario;
+        private System.Windows.Forms.Label lblNombre;
+        private System.Windows.Forms.TextBox txtNombreMarca;
         private System.Windows.Forms.Button btnAceptar;
         private System.Windows.Forms.Button btnCancelar;
-        private System.Windows.Forms.Label lblNombre;
     }
 }
+
