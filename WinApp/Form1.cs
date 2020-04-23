@@ -19,8 +19,8 @@ namespace WinApp
 
         private void btnMarcas_Click(object sender, EventArgs e)
         {
-            frmListadoArticulos frmListadoArticulos = new frmListadoArticulos();
-            frmListadoArticulos.ShowDialog();
+            frmListadoMarcas frmListadoMarcas= new frmListadoMarcas();
+            frmListadoMarcas.ShowDialog();
         }
 
         private void btnCategorias_Click(object sender, EventArgs e)

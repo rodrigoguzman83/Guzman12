@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Negocio;
 
 namespace WinApp
 {
@@ -19,6 +20,19 @@ namespace WinApp
 
         private void frmListadoMarcas_Load(object sender, EventArgs e)
         {
+            MarcaNegocio negocio = new MarcaNegocio();
+
+            try
+            {
+                dgvMarcas.DataSource = negocio.listar();
+                dgvMarcas.Columns[0].Visible = false;
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
 
         }
     }

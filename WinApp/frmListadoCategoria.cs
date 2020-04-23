@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Negocio;
 
 namespace WinApp
 {
@@ -19,7 +20,17 @@ namespace WinApp
 
         private void frmListadoCategoria_Load(object sender, EventArgs e)
         {
+            CategoriaNegocio negocio = new CategoriaNegocio();
+            try
+            {
+                dgvCategorias.DataSource = negocio.listar();
+                dgvCategorias.Columns[0].Visible = false;
+            }
+            catch (Exception ex)
+            {
 
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

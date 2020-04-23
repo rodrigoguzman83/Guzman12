@@ -34,15 +34,13 @@
             this.lblMarca = new System.Windows.Forms.Label();
             this.lblCategoria = new System.Windows.Forms.Label();
             this.lblImagen = new System.Windows.Forms.Label();
-            this.lblProveedor = new System.Windows.Forms.Label();
             this.lblPrecio = new System.Windows.Forms.Label();
             this.txtCodigo = new System.Windows.Forms.TextBox();
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.txtDescripcion = new System.Windows.Forms.TextBox();
-            this.cmbMarca = new System.Windows.Forms.ComboBox();
-            this.cmbCategoria = new System.Windows.Forms.ComboBox();
+            this.cboMarca = new System.Windows.Forms.ComboBox();
+            this.cboCategoria = new System.Windows.Forms.ComboBox();
             this.txtImagen = new System.Windows.Forms.TextBox();
-            this.cmbProveedor = new System.Windows.Forms.ComboBox();
             this.txtPrecio = new System.Windows.Forms.TextBox();
             this.btnAceptar = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
@@ -87,7 +85,7 @@
             // lblCategoria
             // 
             this.lblCategoria.AutoSize = true;
-            this.lblCategoria.Location = new System.Drawing.Point(307, 180);
+            this.lblCategoria.Location = new System.Drawing.Point(22, 162);
             this.lblCategoria.Name = "lblCategoria";
             this.lblCategoria.Size = new System.Drawing.Size(55, 13);
             this.lblCategoria.TabIndex = 4;
@@ -101,15 +99,6 @@
             this.lblImagen.Size = new System.Drawing.Size(45, 13);
             this.lblImagen.TabIndex = 5;
             this.lblImagen.Text = "Imagen:";
-            // 
-            // lblProveedor
-            // 
-            this.lblProveedor.AutoSize = true;
-            this.lblProveedor.Location = new System.Drawing.Point(18, 166);
-            this.lblProveedor.Name = "lblProveedor";
-            this.lblProveedor.Size = new System.Drawing.Size(59, 13);
-            this.lblProveedor.TabIndex = 6;
-            this.lblProveedor.Text = "Proveedor:";
             // 
             // lblPrecio
             // 
@@ -142,39 +131,32 @@
             this.txtDescripcion.Size = new System.Drawing.Size(146, 100);
             this.txtDescripcion.TabIndex = 10;
             // 
-            // cmbMarca
+            // cboMarca
             // 
-            this.cmbMarca.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cmbMarca.FormattingEnabled = true;
-            this.cmbMarca.Location = new System.Drawing.Point(111, 113);
-            this.cmbMarca.Name = "cmbMarca";
-            this.cmbMarca.Size = new System.Drawing.Size(146, 21);
-            this.cmbMarca.TabIndex = 11;
+            this.cboMarca.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cboMarca.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboMarca.FormattingEnabled = true;
+            this.cboMarca.Location = new System.Drawing.Point(111, 113);
+            this.cboMarca.Name = "cboMarca";
+            this.cboMarca.Size = new System.Drawing.Size(146, 21);
+            this.cboMarca.TabIndex = 11;
             // 
-            // cmbCategoria
+            // cboCategoria
             // 
-            this.cmbCategoria.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cmbCategoria.FormattingEnabled = true;
-            this.cmbCategoria.Location = new System.Drawing.Point(396, 177);
-            this.cmbCategoria.Name = "cmbCategoria";
-            this.cmbCategoria.Size = new System.Drawing.Size(146, 21);
-            this.cmbCategoria.TabIndex = 12;
+            this.cboCategoria.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cboCategoria.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboCategoria.FormattingEnabled = true;
+            this.cboCategoria.Location = new System.Drawing.Point(111, 159);
+            this.cboCategoria.Name = "cboCategoria";
+            this.cboCategoria.Size = new System.Drawing.Size(146, 21);
+            this.cboCategoria.TabIndex = 12;
             // 
             // txtImagen
             // 
             this.txtImagen.Location = new System.Drawing.Point(111, 252);
             this.txtImagen.Name = "txtImagen";
-            this.txtImagen.Size = new System.Drawing.Size(146, 20);
+            this.txtImagen.Size = new System.Drawing.Size(431, 20);
             this.txtImagen.TabIndex = 13;
-            // 
-            // cmbProveedor
-            // 
-            this.cmbProveedor.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cmbProveedor.FormattingEnabled = true;
-            this.cmbProveedor.Location = new System.Drawing.Point(111, 166);
-            this.cmbProveedor.Name = "cmbProveedor";
-            this.cmbProveedor.Size = new System.Drawing.Size(146, 21);
-            this.cmbProveedor.TabIndex = 14;
             // 
             // txtPrecio
             // 
@@ -203,6 +185,7 @@
             this.btnCancelar.TabIndex = 17;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
+            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
             // frmArticulo
             // 
@@ -212,15 +195,13 @@
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnAceptar);
             this.Controls.Add(this.txtPrecio);
-            this.Controls.Add(this.cmbProveedor);
             this.Controls.Add(this.txtImagen);
-            this.Controls.Add(this.cmbCategoria);
-            this.Controls.Add(this.cmbMarca);
+            this.Controls.Add(this.cboCategoria);
+            this.Controls.Add(this.cboMarca);
             this.Controls.Add(this.txtDescripcion);
             this.Controls.Add(this.txtNombre);
             this.Controls.Add(this.txtCodigo);
             this.Controls.Add(this.lblPrecio);
-            this.Controls.Add(this.lblProveedor);
             this.Controls.Add(this.lblImagen);
             this.Controls.Add(this.lblCategoria);
             this.Controls.Add(this.lblMarca);
@@ -232,6 +213,7 @@
             this.Name = "frmArticulo";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Articulo";
+            this.Load += new System.EventHandler(this.frmArticulo_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -245,15 +227,13 @@
         private System.Windows.Forms.Label lblMarca;
         private System.Windows.Forms.Label lblCategoria;
         private System.Windows.Forms.Label lblImagen;
-        private System.Windows.Forms.Label lblProveedor;
         private System.Windows.Forms.Label lblPrecio;
         private System.Windows.Forms.TextBox txtCodigo;
         private System.Windows.Forms.TextBox txtNombre;
         private System.Windows.Forms.TextBox txtDescripcion;
-        private System.Windows.Forms.ComboBox cmbMarca;
-        private System.Windows.Forms.ComboBox cmbCategoria;
+        private System.Windows.Forms.ComboBox cboMarca;
+        private System.Windows.Forms.ComboBox cboCategoria;
         private System.Windows.Forms.TextBox txtImagen;
-        private System.Windows.Forms.ComboBox cmbProveedor;
         private System.Windows.Forms.TextBox txtPrecio;
         private System.Windows.Forms.Button btnAceptar;
         private System.Windows.Forms.Button btnCancelar;
