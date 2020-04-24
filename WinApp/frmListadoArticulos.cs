@@ -22,7 +22,28 @@ namespace WinApp
 
         private void frmListadoArticulos_Load(object sender, EventArgs e)
         {
-            cargarDatos();
+            MarcaNegocio marcaNegocio = new MarcaNegocio();
+            CategoriaNegocio categoriaNegocio = new CategoriaNegocio();
+            try
+            {
+                CboCategorias.DataSource = categoriaNegocio.listar();
+                CboCategorias.ValueMember = "Id";
+                CboCategorias.DisplayMember = "Nombre";
+                CboCategorias.SelectedIndex = -1;
+
+                CboMarcas.DataSource = marcaNegocio.listar();
+                CboMarcas.ValueMember = "Id";
+                CboMarcas.DisplayMember = "Nombre";
+                CboMarcas.SelectedIndex = -1;
+
+                cargarDatos();
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         private void dgvArticulos_MouseClick(object sender, MouseEventArgs e)
@@ -99,24 +120,143 @@ namespace WinApp
 
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
+
             List<Articulo> listaFiltrada;
+            string campo = cboCampos.SelectedItem.ToString();
             try
             {
-                if (txtBuscar.Text == "")
+                
+                if (txtBuscar.Text == "" || txtBuscar.Text.Length <=3)
                 {
                     listaFiltrada = lista;
+                    dgvArticulos.DataSource = listaFiltrada;
+
                 }
-                else
+                if (campo == "Codigo")
+                {
+                    listaFiltrada = lista.FindAll(k => k.Codigo.ToLower().Contains(txtBuscar.Text.ToLower()));
+                    dgvArticulos.DataSource = listaFiltrada;
+                }
+                if (campo == "Nombre" && txtBuscar.Text.Length > 3)
+                {
+                    listaFiltrada = lista.FindAll(k => k.Nombre.ToLower().Contains(txtBuscar.Text.ToLower()));
+                    dgvArticulos.DataSource = listaFiltrada;
+                }
+                if (campo == "Descripcion" && txtBuscar.Text.Length > 3 )
                 {
                     listaFiltrada = lista.FindAll(k => k.Descripcion.ToLower().Contains(txtBuscar.Text.ToLower()));
-                    //dgvArticulos.DataSource = listaFiltrada;
+                    dgvArticulos.DataSource = listaFiltrada;
                 }
-                dgvArticulos.DataSource = listaFiltrada;
+                //dgvArticulos.DataSource = listaFiltrada;
             }
             catch (Exception ex)
             {
 
                 MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void cboCampos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string campo = cboCampos.SelectedItem.ToString();
+            if(campo == "Codigo")
+            {
+                cargarDatos();
+                txtBuscar.Visible = true;
+                txtBuscar.Location = new Point(176, 47);
+                CboMarcas.Visible = false;
+                CboCategorias.Visible = false;
+                txtBuscar.Focus();
+            }
+            if (campo == "Nombre")
+            {
+                cargarDatos();
+                txtBuscar.Visible = true;
+                txtBuscar.Location = new Point(176, 47);
+                CboMarcas.Visible = false;
+                CboCategorias.Visible = false;
+                txtBuscar.Focus();
+            }
+            if (campo == "Descripcion")
+            {
+                cargarDatos();
+                txtBuscar.Visible = true;
+                txtBuscar.Location = new Point(176, 47);
+                CboMarcas.Visible = false;
+                CboCategorias.Visible = false;
+                txtBuscar.Focus();
+            }
+            if (campo == "Categoria")
+            {
+                cargarDatos();
+                CboCategorias.Visible = true;
+                CboCategorias.Location = new Point(176, 47);
+                CboMarcas.Visible = false;
+                txtBuscar.Visible = false;
+            }
+            if (campo == "Marca")
+            {
+                cargarDatos();
+                CboMarcas.Visible = true;
+                CboMarcas.Location=new Point(176, 47);
+                CboCategorias.Visible = false;
+                txtBuscar.Visible = false;
+            }
+        }
+
+        private void CboMarcas_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (CboMarcas.Visible == true)
+            {
+                int id = CboMarcas.SelectedIndex + 1;
+                string campo = CboMarcas.SelectedItem.ToString();
+
+                ArticuloNegocio negocio = new ArticuloNegocio();
+
+                try
+                {
+                    lista = negocio.listarByFilters(campo, id);
+                    dgvArticulos.DataSource = lista;
+                    dgvArticulos.Columns[0].Visible = false;
+                    dgvArticulos.Columns[6].Visible = false;
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show(ex.ToString());
+                }
+            }
+            else
+            {
+                cargarDatos();
+            }
+        }
+
+        private void CboCategorias_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (CboCategorias.Visible == true)
+            {
+                int id = CboCategorias.SelectedIndex;
+                string campo = CboCategorias.SelectedItem.ToString();
+
+                ArticuloNegocio negocio = new ArticuloNegocio();
+
+                try
+                {
+                    lista = negocio.listarByFilters(campo, id);
+                    dgvArticulos.DataSource = lista;
+                    dgvArticulos.Columns[0].Visible = false;
+                    dgvArticulos.Columns[6].Visible = false;
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show(ex.ToString());
+                }
+            }
+            else
+            {
+                cargarDatos();
             }
         }
     }

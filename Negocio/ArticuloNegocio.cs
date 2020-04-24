@@ -193,5 +193,64 @@ namespace Negocio
             }
 
         }
+
+        public List<Articulo> listarByFilters(string campo, int id)
+        {
+            List<Articulo> lista = new List<Articulo>();
+            Articulo art;
+
+            AccesoDatos datos = new AccesoDatos();
+
+            string cadena = "";
+
+            if(campo == "Categoria")
+            {
+                cadena= "select a.Id,a.Codigo,a.Nombre,a.Descripcion,a.IdCategoria,c.Descripcion,a.IdMarca,b.Descripcion,a.ImagenUrl,a.Precio from ARTICULOS a inner join MARCAS b on b.Id = a.IdMarca inner join CATEGORIAS c on c.Id = a.IdCategoria where a.IdCategoria=" + id;
+            }
+            else
+            {
+                cadena = "select a.Id,a.Codigo,a.Nombre,a.Descripcion,a.IdCategoria,c.Descripcion,a.IdMarca,b.Descripcion,a.ImagenUrl,a.Precio from ARTICULOS a inner join MARCAS b on b.Id = a.IdMarca inner join CATEGORIAS c on c.Id = a.IdCategoria where a.IdMarca=" + id;
+            }
+
+            try
+            {
+                datos.setearQuery(cadena);
+                datos.ejecutarLector();
+
+                while (datos.lector.Read())
+                {
+                    art = new Articulo();
+                    art.Id = datos.lector.GetInt32(0);
+                    art.Codigo = datos.lector.GetString(1);
+                    art.Nombre = datos.lector.GetString(2);
+                    art.Descripcion = datos.lector.GetString(3);
+
+                    art.Categorias = new Categoria();
+                    art.Categorias.Id = datos.lector.GetInt32(4);
+                    art.Categorias.Nombre = datos.lector.GetString(5);
+
+                    art.Marcas = new Marca();
+                    art.Marcas.Id = datos.lector.GetInt32(6);
+                    art.Marcas.Nombre = datos.lector.GetString(7);
+                    art.Imagen = datos.lector.GetString(8);
+                    art.Precio = (double)datos.lector.GetDecimal(9);
+
+                    lista.Add(art);
+
+                }
+
+                return lista;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+
+        }
     }
 }
