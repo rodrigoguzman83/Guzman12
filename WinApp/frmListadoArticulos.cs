@@ -28,9 +28,7 @@ namespace WinApp
         {
             try
             {
-                cboCampos.Focus();
                 cargarDatos();
-
             }
             catch (Exception ex)
             {
@@ -56,6 +54,27 @@ namespace WinApp
                 dgvArticulos.DataSource = lista;
                 dgvArticulos.Columns[0].Visible = false;
                 dgvArticulos.Columns[6].Visible = false;
+
+                if (dgvArticulos.Rows.Count > 0)
+                {
+                    rdbAscendente.Enabled = true;
+                    rdbDescendente.Enabled = true;
+                    btnEliminar.Enabled = true;
+                    btnModificar.Enabled = true;
+                    btnExportarExcel.Enabled = true;
+                    btnVerDetalle.Enabled = true;
+                    cboCampos.Enabled = true;
+                }
+                else
+                {
+                    rdbAscendente.Enabled = false;
+                    rdbDescendente.Enabled = false;
+                    btnEliminar.Enabled = false;
+                    btnModificar.Enabled = false;
+                    btnExportarExcel.Enabled = false;
+                    btnVerDetalle.Enabled = false;
+                    cboCampos.Enabled = false;
+                }
             }
             catch (Exception ex)
             {
@@ -259,7 +278,7 @@ namespace WinApp
         private void rdbAscendente_CheckedChanged(object sender, EventArgs e)
         {
             List<Articulo> listaFiltrada;
-            listaFiltrada = lista.OrderBy(k => k.Precio).ToList() ;
+            listaFiltrada = lista.OrderBy(k => k.Precio).ToList();
             dgvArticulos.DataSource = listaFiltrada;
         }
 
