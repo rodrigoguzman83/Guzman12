@@ -45,7 +45,7 @@ namespace Negocio
                     art.Marcas.Id = lector.GetInt32(6);
                     art.Marcas.Nombre = lector.GetString(7);
                     art.Imagen = lector.GetString(8);
-                    art.Precio = (double)lector.GetDecimal(9);
+                    art.Precio = lector.GetDecimal(9);
 
                     lista.Add(art);
 
@@ -69,7 +69,7 @@ namespace Negocio
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.setearQuery("update ARTICULOS set Codigo=@codigo,Nombre=@nombre,Descripcion=@descripcion,IdCategoria=@idCategoria,IdMarca=@idMarca,ImagenURL=@imagen,Precio=@precio where Id=@id" );
+                datos.setearQuery("update ARTICULOS set Codigo=@codigo,Nombre=@nombre,Descripcion=@descripcion,IdCategoria=@idCategoria,IdMarca=@idMarca,ImagenURL=@imagen,Precio=@precio where Id=@id");
                 datos.agregarParametro("@id", articulo.Id);
                 datos.agregarParametro("@codigo", articulo.Codigo);
                 datos.agregarParametro("@nombre", articulo.Nombre);
@@ -120,13 +120,13 @@ namespace Negocio
                 comando.CommandType = System.Data.CommandType.Text;
                 comando.CommandText = "insert into ARTICULOS values (@codigo,@nombre,@descripcion,@idCategoria,@idMarca,@imagen,@precio)";
                 comando.Parameters.Clear();
-                comando.Parameters.AddWithValue("@codigo",nuevo.Codigo);
-                comando.Parameters.AddWithValue("@nombre",nuevo.Nombre);
-                comando.Parameters.AddWithValue("@descripcion",nuevo.Descripcion);
-                comando.Parameters.AddWithValue("@idCategoria",nuevo.Categorias.Id);
-                comando.Parameters.AddWithValue("@idMarca",nuevo.Marcas.Id);
-                comando.Parameters.AddWithValue("@imagen",nuevo.Imagen);
-                comando.Parameters.AddWithValue("@precio",nuevo.Precio);
+                comando.Parameters.AddWithValue("@codigo", nuevo.Codigo);
+                comando.Parameters.AddWithValue("@nombre", nuevo.Nombre);
+                comando.Parameters.AddWithValue("@descripcion", nuevo.Descripcion);
+                comando.Parameters.AddWithValue("@idCategoria", nuevo.Categorias.Id);
+                comando.Parameters.AddWithValue("@idMarca", nuevo.Marcas.Id);
+                comando.Parameters.AddWithValue("@imagen", nuevo.Imagen);
+                comando.Parameters.AddWithValue("@precio", nuevo.Precio);
                 comando.Connection = conexion;
 
                 conexion.Open();
@@ -155,7 +155,7 @@ namespace Negocio
 
             try
             {
-                datos.setearQuery("select a.Id,a.Codigo,a.Nombre,a.Descripcion,a.IdCategoria,c.Descripcion,a.IdMarca,b.Descripcion,a.ImagenUrl,a.Precio from ARTICULOS a inner join MARCAS b on b.Id = a.IdMarca inner join CATEGORIAS c on c.Id = a.IdCategoria");
+                datos.setearQuery("select a.Id,a.Codigo,a.Nombre,a.Descripcion,a.IdCategoria,c.Descripcion,a.IdMarca,b.Descripcion,a.ImagenUrl,a.Precio from ARTICULOS a inner join MARCAS b on b.Id = a.IdMarca inner join CATEGORIAS c on c.Id = a.IdCategoria order by a.codigo ");
                 datos.ejecutarLector();
 
                 while (datos.lector.Read())
@@ -174,66 +174,7 @@ namespace Negocio
                     art.Marcas.Id = datos.lector.GetInt32(6);
                     art.Marcas.Nombre = datos.lector.GetString(7);
                     art.Imagen = datos.lector.GetString(8);
-                    art.Precio = (double)datos.lector.GetDecimal(9);
-
-                    lista.Add(art);
-
-                }
-
-                return lista;
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-            finally
-            {
-                datos.cerrarConexion();
-            }
-
-        }
-
-        public List<Articulo> listarByFilters(string campo, int id)
-        {
-            List<Articulo> lista = new List<Articulo>();
-            Articulo art;
-
-            AccesoDatos datos = new AccesoDatos();
-
-            string cadena = "";
-
-            if(campo == "Categoria")
-            {
-                cadena= "select a.Id,a.Codigo,a.Nombre,a.Descripcion,a.IdCategoria,c.Descripcion,a.IdMarca,b.Descripcion,a.ImagenUrl,a.Precio from ARTICULOS a inner join MARCAS b on b.Id = a.IdMarca inner join CATEGORIAS c on c.Id = a.IdCategoria where a.IdCategoria=" + id;
-            }
-            else
-            {
-                cadena = "select a.Id,a.Codigo,a.Nombre,a.Descripcion,a.IdCategoria,c.Descripcion,a.IdMarca,b.Descripcion,a.ImagenUrl,a.Precio from ARTICULOS a inner join MARCAS b on b.Id = a.IdMarca inner join CATEGORIAS c on c.Id = a.IdCategoria where a.IdMarca=" + id;
-            }
-
-            try
-            {
-                datos.setearQuery(cadena);
-                datos.ejecutarLector();
-
-                while (datos.lector.Read())
-                {
-                    art = new Articulo();
-                    art.Id = datos.lector.GetInt32(0);
-                    art.Codigo = datos.lector.GetString(1);
-                    art.Nombre = datos.lector.GetString(2);
-                    art.Descripcion = datos.lector.GetString(3);
-
-                    art.Categorias = new Categoria();
-                    art.Categorias.Id = datos.lector.GetInt32(4);
-                    art.Categorias.Nombre = datos.lector.GetString(5);
-
-                    art.Marcas = new Marca();
-                    art.Marcas.Id = datos.lector.GetInt32(6);
-                    art.Marcas.Nombre = datos.lector.GetString(7);
-                    art.Imagen = datos.lector.GetString(8);
-                    art.Precio = (double)datos.lector.GetDecimal(9);
+                    art.Precio = datos.lector.GetDecimal(9);
 
                     lista.Add(art);
 

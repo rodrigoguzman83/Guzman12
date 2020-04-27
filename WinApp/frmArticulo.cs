@@ -30,6 +30,8 @@ namespace WinApp
         private void btnAceptar_Click(object sender, EventArgs e)
         {
             ArticuloNegocio articuloNegocio = new ArticuloNegocio();
+            List<Articulo> lista = new List<Articulo>();
+            List<Articulo> listaFiltrada;
 
             //Articulo articulo = new Articulo();
 
@@ -38,18 +40,71 @@ namespace WinApp
                 if (articulo == null)
                     articulo = new Articulo();
 
-                articulo.Codigo = txtCodigo.Text;
-                articulo.Nombre = txtNombre.Text;
-                articulo.Descripcion = txtDescripcion.Text;
+                //VALIDACIONES
+                if (string.IsNullOrEmpty(txtCodigo.Text.Trim()))
+                {
+                    MessageBox.Show("Debe ingresar el CODIGO DEL ARTICULO", "Alta de Articulo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtCodigo.Focus();
+                    return;                    
+                }
+
+                //VALIDO QUE NO EXISTA EL CODIGO YA
+                /*lista = articuloNegocio.listarNuevo();
+                listaFiltrada = lista.FindAll(k => k.Codigo.ToLower().Contains(txtCodigo.Text.ToLower()));
+                if (listaFiltrada.Count >= 1)
+                {
+                    MessageBox.Show("Ya existe ese CODIGO DE ARTICULO", "Alta de Articulo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    txtCodigo.Focus();
+                    return;
+                }*/
+
+                if (string.IsNullOrEmpty(txtNombre.Text.Trim()))
+                {
+                    MessageBox.Show("Debe ingresar el NOMBRE DEL ARTICULO", "Alta de Articulo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtNombre.Focus();
+                    return;
+                }
+
+                if (cboMarca.SelectedIndex == -1)
+                {
+                    MessageBox.Show("Debe elegir la MARCA DEL ARTICULO", "Alta de Articulo", MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                    cboMarca.Focus();
+                    return;
+                }
+
+                if (cboCategoria.SelectedIndex == -1)
+                {
+                    MessageBox.Show("Debe elegir la CATEGORIA DEL ARTICULO", "Alta de Articulo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    cboCategoria.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(txtPrecio.Text))
+                {
+                    MessageBox.Show("Debe ingresar el PRECIO DEL ARTICULO", "Alta de Articulo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtPrecio.Focus();
+                    return;
+                }
+
+                articulo.Codigo = txtCodigo.Text.Trim();
+                articulo.Nombre = txtNombre.Text.Trim();
+                articulo.Descripcion = txtDescripcion.Text.Trim();
                 articulo.Categorias = (Categoria)cboCategoria.SelectedItem;
                 articulo.Marcas= (Marca)cboMarca.SelectedItem;
                 articulo.Imagen = txtImagen.Text;
-                articulo.Precio = double.Parse(txtPrecio.Text);
+                articulo.Precio = Convert.ToDecimal(txtPrecio.Text);
 
-                if(articulo.Id !=0)
+                if (articulo.Id != 0)
+                {
                     articuloNegocio.Modificar(articulo);
+                    MessageBox.Show("Su articulo fue modificado con exito", "Articulos");
+                }   
                 else
+                {
                     articuloNegocio.Agregar(articulo);
+                    MessageBox.Show("Su articulo fue dado de alta con exito", "Articulos");
+                }
+                    
 
                 Dispose();
             }
@@ -62,8 +117,9 @@ namespace WinApp
 
         private void frmArticulo_Load(object sender, EventArgs e)
         {
-            MarcaNegocio marcaNegocio = new MarcaNegocio();
             CategoriaNegocio categoriaNegocio = new CategoriaNegocio();
+            MarcaNegocio marcaNegocio = new MarcaNegocio();
+            
             try
             {
                 cboCategoria.DataSource = categoriaNegocio.listar();
@@ -104,11 +160,14 @@ namespace WinApp
 
         private void txtPrecio_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!(char.IsNumber(e.KeyChar)) && (e.KeyChar != (char)Keys.Back))
+            if ((e.KeyChar < 48 || e.KeyChar > 57) && e.KeyChar == 46)
+
             {
-                MessageBox.Show("Solo se permiten numeros", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                e.Handled = true;
-                return;
+                if ( e.KeyChar != 8)
+
+                {
+                    e.Handled = true;
+                }
             }
         }
     }

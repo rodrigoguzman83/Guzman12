@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Negocio;
 using Dominio;
+using System.IO;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.Diagnostics;
 
 namespace WinApp
 {
@@ -22,20 +26,9 @@ namespace WinApp
 
         private void frmListadoArticulos_Load(object sender, EventArgs e)
         {
-            MarcaNegocio marcaNegocio = new MarcaNegocio();
-            CategoriaNegocio categoriaNegocio = new CategoriaNegocio();
             try
             {
-                CboCategorias.DataSource = categoriaNegocio.listar();
-                CboCategorias.ValueMember = "Id";
-                CboCategorias.DisplayMember = "Nombre";
-                CboCategorias.SelectedIndex = -1;
-
-                CboMarcas.DataSource = marcaNegocio.listar();
-                CboMarcas.ValueMember = "Id";
-                CboMarcas.DisplayMember = "Nombre";
-                CboMarcas.SelectedIndex = -1;
-
+                cboCampos.Focus();
                 cargarDatos();
 
             }
@@ -43,21 +36,6 @@ namespace WinApp
             {
 
                 throw ex;
-            }
-        }
-
-        private void dgvArticulos_MouseClick(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                Articulo art;
-                art = (Articulo)dgvArticulos.CurrentRow.DataBoundItem;
-                picArticulo.Load(art.Imagen);
-            }
-            catch (Exception ex)
-            {
-
-               MessageBox.Show(ex.ToString());
             }
         }
 
@@ -102,9 +80,22 @@ namespace WinApp
             ArticuloNegocio articuloNegocio = new ArticuloNegocio();
             try
             {
-                int id = ((Articulo)dgvArticulos.CurrentRow.DataBoundItem).Id;
-                articuloNegocio.eliminar(id);
-                cargarDatos();
+                if(dgvArticulos.Rows.Count == 0)
+                {
+                    btnEliminar.Enabled = false;
+                }
+
+                var resp= MessageBox.Show("Esta seguro que quiere eliminar el articulo?","Eliminar articulo",MessageBoxButtons.YesNo);
+                if (resp == DialogResult.No)
+                {
+                    return;
+                }
+                else
+                {
+                    int id = ((Articulo)dgvArticulos.CurrentRow.DataBoundItem).Id;
+                    articuloNegocio.eliminar(id);
+                    cargarDatos();
+                }
             }
             catch (Exception ex)
             {
@@ -147,6 +138,16 @@ namespace WinApp
                     listaFiltrada = lista.FindAll(k => k.Descripcion.ToLower().Contains(txtBuscar.Text.ToLower()));
                     dgvArticulos.DataSource = listaFiltrada;
                 }
+                if (campo == "Categoria" && txtBuscar.Text.Length > 3)
+                {
+                    listaFiltrada = lista.FindAll(k => k.Categorias.Nombre.ToLower().Contains(txtBuscar.Text.ToLower()));
+                    dgvArticulos.DataSource = listaFiltrada;
+                }
+                if (campo == "Marca" && txtBuscar.Text.Length > 3)
+                {
+                    listaFiltrada = lista.FindAll(k => k.Marcas.Nombre.ToLower().Contains(txtBuscar.Text.ToLower()));
+                    dgvArticulos.DataSource = listaFiltrada;
+                }
                 //dgvArticulos.DataSource = listaFiltrada;
             }
             catch (Exception ex)
@@ -163,101 +164,110 @@ namespace WinApp
             {
                 cargarDatos();
                 txtBuscar.Visible = true;
-                txtBuscar.Location = new Point(176, 47);
-                CboMarcas.Visible = false;
-                CboCategorias.Visible = false;
                 txtBuscar.Focus();
             }
             if (campo == "Nombre")
             {
                 cargarDatos();
                 txtBuscar.Visible = true;
-                txtBuscar.Location = new Point(176, 47);
-                CboMarcas.Visible = false;
-                CboCategorias.Visible = false;
                 txtBuscar.Focus();
             }
             if (campo == "Descripcion")
             {
                 cargarDatos();
                 txtBuscar.Visible = true;
-                txtBuscar.Location = new Point(176, 47);
-                CboMarcas.Visible = false;
-                CboCategorias.Visible = false;
                 txtBuscar.Focus();
             }
             if (campo == "Categoria")
             {
                 cargarDatos();
-                CboCategorias.Visible = true;
-                CboCategorias.Location = new Point(176, 47);
-                CboMarcas.Visible = false;
-                txtBuscar.Visible = false;
+                txtBuscar.Visible = true;
+                txtBuscar.Focus();
             }
             if (campo == "Marca")
             {
                 cargarDatos();
-                CboMarcas.Visible = true;
-                CboMarcas.Location=new Point(176, 47);
-                CboCategorias.Visible = false;
-                txtBuscar.Visible = false;
+                txtBuscar.Visible = true;
+                txtBuscar.Focus();
             }
         }
 
-        private void CboMarcas_SelectedIndexChanged(object sender, EventArgs e)
+        private void btnVerDetalle_Click(object sender, EventArgs e)
         {
-            if (CboMarcas.Visible == true)
+            Articulo mostrar;
+            mostrar = (Articulo)dgvArticulos.CurrentRow.DataBoundItem;
+            frmDetalleArticulo frmDetalleArticulo = new frmDetalleArticulo(mostrar);
+            frmDetalleArticulo.ShowDialog();
+        }
+
+        private void btnExportarPdf_Click(object sender, EventArgs e)
+        {
+            if (dgvArticulos.Rows.Count > 0)
             {
-                int id = CboMarcas.SelectedIndex + 1;
-                string campo = CboMarcas.SelectedItem.ToString();
-
-                ArticuloNegocio negocio = new ArticuloNegocio();
-
-                try
-                {
-                    lista = negocio.listarByFilters(campo, id);
-                    dgvArticulos.DataSource = lista;
-                    dgvArticulos.Columns[0].Visible = false;
-                    dgvArticulos.Columns[6].Visible = false;
-                }
-                catch (Exception ex)
-                {
-
-                    MessageBox.Show(ex.ToString());
-                }
+                ExportarExcel();
             }
             else
             {
-                cargarDatos();
+                btnExportarExcel.Enabled = false;
+            }
+            
+        }
+
+        public void ExportarExcel()
+        {
+            Microsoft.Office.Interop.Excel._Application app = new Microsoft.Office.Interop.Excel.Application();
+            Microsoft.Office.Interop.Excel._Workbook workbook = app.Workbooks.Add(Type.Missing);
+            Microsoft.Office.Interop.Excel._Worksheet worksheet = null;
+            app.Visible = false;
+            worksheet = workbook.Sheets["Hoja1"];
+            worksheet = workbook.ActiveSheet;
+            worksheet.Name = "Articulos";
+            // Cabeceras
+            for (int i = 0; i < dgvArticulos.Columns.Count + 1; i++)
+            {
+                if (i > 0 && i < dgvArticulos.Columns.Count)
+                {
+                    worksheet.Cells[1, i + 1] = dgvArticulos.Columns[i].HeaderText;
+                }
+            }
+            // Valores
+            for (int i = 0; i < dgvArticulos.Rows.Count - 1; i++)
+            {
+                for (int j = 0; j < dgvArticulos.Columns.Count; j++)
+                {
+                    if (j > 0 && j < dgvArticulos.Columns.Count)
+                    {
+                        worksheet.Cells[i + 2, j + 1] = dgvArticulos.Rows[i].Cells[j].Value.ToString();
+                    }
+                }
+            }
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Archivos de Excel|*.xlsx";
+            saveFileDialog.Title = "Guardar archivo";
+            saveFileDialog.FileName = "NombredeArchivoDefault";
+            saveFileDialog.ShowDialog();
+
+            if (saveFileDialog.FileName != "")
+            {
+                Console.WriteLine("Ruta en: " + saveFileDialog.FileName);
+                workbook.SaveAs(saveFileDialog.FileName, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                app.Quit();
             }
         }
 
-        private void CboCategorias_SelectedIndexChanged(object sender, EventArgs e)
+        private void rdbAscendente_CheckedChanged(object sender, EventArgs e)
         {
-            if (CboCategorias.Visible == true)
-            {
-                int id = CboCategorias.SelectedIndex;
-                string campo = CboCategorias.SelectedItem.ToString();
+            List<Articulo> listaFiltrada;
+            listaFiltrada = lista.OrderBy(k => k.Precio).ToList() ;
+            dgvArticulos.DataSource = listaFiltrada;
+        }
 
-                ArticuloNegocio negocio = new ArticuloNegocio();
-
-                try
-                {
-                    lista = negocio.listarByFilters(campo, id);
-                    dgvArticulos.DataSource = lista;
-                    dgvArticulos.Columns[0].Visible = false;
-                    dgvArticulos.Columns[6].Visible = false;
-                }
-                catch (Exception ex)
-                {
-
-                    MessageBox.Show(ex.ToString());
-                }
-            }
-            else
-            {
-                cargarDatos();
-            }
+        private void rdbDescendente_CheckedChanged(object sender, EventArgs e)
+        {
+            List<Articulo> listaFiltrada;
+            listaFiltrada = lista.OrderByDescending(k => k.Precio).ToList();
+            dgvArticulos.DataSource = listaFiltrada;
         }
     }
 }

@@ -24,6 +24,7 @@ namespace Dominio
         {
             comando.CommandType = System.Data.CommandType.Text;
             comando.CommandText = query;
+
         }
 
         public void setearSP(string sp)
