@@ -287,6 +287,15 @@ namespace WinApp
             List<Articulo> listaFiltrada;
             listaFiltrada = lista.OrderByDescending(k => k.Precio).ToList();
             dgvArticulos.DataSource = listaFiltrada;
+
+
+
+
+
+
+
+
+
         }
     }
 }
